@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
-    "bootstrap": "^5.3.7",
+    "@tailwindcss/postcss": "^4.1.11",
     "bootstrap-icons": "^1.13.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
@@ -22,7 +22,10 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
-    "eslint-config-next": "15.4.1"
+    "eslint-config-next": "15.4.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11"
   }
 }
