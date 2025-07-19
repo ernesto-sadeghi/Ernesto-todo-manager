@@ -71,21 +71,20 @@ app.post("/todo-add", async (req, res) => {
 });
 
 
-// PUT /todo-edit/:id
-app.put("/todo-edit/:id", async (req, res) => {
+// PATCH  /todo-edit/:id
+app.patch("/todo-toggle/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedTodo = await Todo.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true
-    });
-    if (!updatedTodo) return res.status(404).json({ message: "Todo not found" });
-    res.json(updatedTodo);
+    const todo = await Todo.findById(id);
+    if (!todo) return res.status(404).json({ message: "Todo not found" });
+    todo.completed = !todo.completed;
+    await todo.save();
+    res.json(todo);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
-
 });
+
 
 
 //DELETE /todo-delete/:id
