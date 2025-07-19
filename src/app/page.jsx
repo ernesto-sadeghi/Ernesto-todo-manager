@@ -1,3 +1,4 @@
+'use client'
 import StatusFilter from "./components/StatusFilter";
 import TodoFooter from "./components/TodoFooter";
 import TodoInput from "./components/TodoInput";
