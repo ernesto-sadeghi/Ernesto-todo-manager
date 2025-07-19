@@ -18,6 +18,10 @@ export const toggleTodo = createAsyncThunk("todos/toggleTodo", async (id) => {
   const response = await axios.patch(`http://localhost:5000/todo-toggle/${id}`);
   return response.data;
 });
+export const deleteTodo = createAsyncThunk("todos/deleteTodo", async (id) => {
+  const response = await axios.delete(`http://localhost:5000/todo-delete/${id}`);
+  return response.data;
+});
 
 
 
@@ -99,6 +103,18 @@ const todoSlice = createSlice({
         });
       })
       .addCase(toggleTodo.rejected, (state, action) => {
+        state.toggleStatus = 'error';
+        state.error = action.payload;
+      })
+      .addCase(deleteTodo.pending, (state) => {
+        state.toggleStatus = 'loading';
+      })
+      .addCase(deleteTodo.fulfilled, (state, action) => {
+        state.toggleStatus = 'idle';
+        console.log(action.payload);
+        todoAdapter.removeOne(state,action.payload.deletedTodoId);
+      })
+      .addCase(deleteTodo.rejected, (state, action) => {
         state.toggleStatus = 'error';
         state.error = action.payload;
       });

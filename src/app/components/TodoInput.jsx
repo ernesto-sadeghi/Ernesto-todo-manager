@@ -33,7 +33,7 @@ const handleSubmit = ()=>{
               placeholder="sub-content"
               className="flex-1 my-4 px-4 py-2 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
             />
-            <button onClick={handleSubmit} className="bg-secondary text-white px-4 py-2 rounded-r-lg hover:bg-secondary/90 transition">
+            <button onClick={handleSubmit} className="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-secondary/90 transition">
               Add
             </button>
           </div>

@@ -93,7 +93,7 @@ app.delete("/todo-delete/:id", async (req, res) => {
     const { id } = req.params;
     const deleted = await Todo.findByIdAndDelete(id);
     if (!deleted) return res.status(404).json({ message: "Todo not found" });
-    res.json({ message: "Todo deleted successfully" });
+    res.json({ deletedTodoId: id,message:"deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
