@@ -1,7 +1,8 @@
 'use client'
 import axios from "axios";
 
-import { createSlice, createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createEntityAdapter, createSelector } from "@reduxjs/toolkit";
+import { StatusFilters } from "./filterSlice";
 
 export const fetchTodo = createAsyncThunk("todos/fetchtodo", async () => {
   const response = await axios.get('http://localhost:5000/get-todos?userId=687ac40166e46310b469e92e')
@@ -41,29 +42,6 @@ const initialState = todoAdapter.getInitialState({
 
 const todoSlice = createSlice({
   name: "todos", initialState, reducers: {
-    // todoAdded(state, action) {
-    // const todo = action.payload;
-    // todoAdapter.addOne
-    // const newId = Object.keys(state.entities).length + 1;
-    // state.entities[newId] = {
-    //     id: newId,
-    //     text: todo, // Ensure text is never undefined
-    //     completed: false,
-    //     color: todo.color || ''
-    // };
-    // console.log(Object.values(state.entities));
-    // },
-    // todoToggled(state, action) {
-    //     const toggledTodoId = action.payload
-    //     const todoToggled = state.entities[toggledTodoId]
-    //     todoToggled.completed = !todoToggled.completed
-
-    // },
-    // todoDeleted(state, action) {
-    //     const deletedTodoId = action.payload
-    //     delete state.entities[deletedTodoId]
-
-    // }
   }, extraReducers: (builder) => {
     builder
       .addCase(fetchTodo.pending, (state) => {
@@ -82,7 +60,7 @@ const todoSlice = createSlice({
       })
       .addCase(addTodo.fulfilled, (state, action) => {
         state.status = 'success';
-        console.log(action.payload);
+   
         todoAdapter.addOne(state, action.payload);
       })
       .addCase(addTodo.rejected, (state, action) => {
@@ -94,7 +72,7 @@ const todoSlice = createSlice({
       })
       .addCase(toggleTodo.fulfilled, (state, action) => {
         state.toggleStatus = 'idle';
-        console.log(action.payload);
+  
         todoAdapter.updateOne(state, {
           id: action.payload._id, 
           changes: {
@@ -111,7 +89,7 @@ const todoSlice = createSlice({
       })
       .addCase(deleteTodo.fulfilled, (state, action) => {
         state.toggleStatus = 'idle';
-        console.log(action.payload);
+        
         todoAdapter.removeOne(state,action.payload.deletedTodoId);
       })
       .addCase(deleteTodo.rejected, (state, action) => {
@@ -125,10 +103,35 @@ const todoSlice = createSlice({
 export default todoSlice.reducer
 
 
+ const selectTodoEntities = state => state.todos.entities
+
+ const selectTodos = createSelector(
+    selectTodoEntities,
+    (todoEntities) => Object.values(todoEntities)
+)
+
+const selectFilteredTodos = createSelector(selectTodos, state => state.filter,
+    (todos, filters) => {
+       
+        const { filterStatus } = filters
+        const showAll = filterStatus === StatusFilters.All
+        if (showAll) {
+            return todos  // Return all todos when no filters are applied
+        }
+
+        const showCompleted = filterStatus === StatusFilters.Completed
+        return todos.filter(todo => {
+            const statusMatches = showAll || (showCompleted && todo.completed) || (!showCompleted && !todo.completed)
+         
+            return statusMatches
+        })
+    }
+
+)
 
 
-
-
-
-
+export const filteredTodoIds = createSelector(
+  selectFilteredTodos,
+  (todos) => todos.map(todo => todo._id)
+)
 

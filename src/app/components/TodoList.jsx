@@ -1,10 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTodo, selectTodotIds } from "../todoSlice";
+import {  useDispatch, useSelector } from "react-redux";
+import { fetchTodo, filteredTodoIds,  } from "../todoSlice";
 import TodoItem from "./TodoItem";
 import { useEffect } from "react";
 
 function TodoList() {
-    const todoIds = useSelector(selectTodotIds)
+
+    const todoIds = useSelector(filteredTodoIds)
+
+    
     const dispatch = useDispatch()
     const status = useSelector(state => state.todos.status)
     const error = useSelector(state => state.todos.error)

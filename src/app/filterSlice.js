@@ -1,4 +1,12 @@
-const { createSlice } = require("@reduxjs/toolkit");
+'use client'
+
+import { createSlice } from "@reduxjs/toolkit";
+
+export const StatusFilters = {
+    All: 'All',
+    Active: 'Active',
+    Completed: 'Completed',
+}
 
 
 
@@ -7,5 +15,14 @@ const { createSlice } = require("@reduxjs/toolkit");
 
 
 
-const filterSlice = createSlice({name:"filter",initialState:{},reducers:{}})
+const filterSlice = createSlice({name:"filter",initialState:{
+    filterStatus:StatusFilters.All
+},reducers:{
+    changeFilter:(state,action)=>{
+        
+        state.filterStatus = action.payload
+
+    }
+}})
+export const {changeFilter} = filterSlice.actions;
 export default filterSlice.reducer
