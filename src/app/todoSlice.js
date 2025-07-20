@@ -31,7 +31,7 @@ const todoAdapter = createEntityAdapter({ selectId: (todo) => todo._id, sortComp
 
 export const {
   selectById: selectTodoById,
-  selectIds: selectTodotIds
+  selectIds: selectTodoIds
 } = todoAdapter.getSelectors(state => state.todos)
 const initialState = todoAdapter.getInitialState({
 
@@ -105,7 +105,7 @@ export default todoSlice.reducer
 
  const selectTodoEntities = state => state.todos.entities
 
- const selectTodos = createSelector(
+export const selectTodos = createSelector(
     selectTodoEntities,
     (todoEntities) => Object.values(todoEntities)
 )
