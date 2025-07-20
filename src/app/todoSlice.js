@@ -4,13 +4,14 @@ import axios from "axios";
 import { createSlice, createAsyncThunk, createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { StatusFilters } from "./filterSlice";
 
-export const fetchTodo = createAsyncThunk("todos/fetchtodo", async () => {
-  const response = await axios.get('http://localhost:5000/get-todos?userId=687ac40166e46310b469e92e')
+
+export const fetchTodo = createAsyncThunk("todos/fetchtodo", async (id) => {
+  const response = await axios.get(`http://localhost:5000/get-todos?userId=${id}`)
   return response.data
 })
 export const addTodo = createAsyncThunk("todos/addtodo", async (todo) => {
   const response = await axios.post('http://localhost:5000/todo-add', {
-    ...todo, completed: false, user: "687ac40166e46310b469e92e"
+    ...todo, completed: false
   })
   return response.data
 })

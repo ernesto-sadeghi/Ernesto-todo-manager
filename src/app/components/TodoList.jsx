@@ -1,24 +1,25 @@
-import {  useDispatch, useSelector } from "react-redux";
-import { fetchTodo, filteredTodoIds,  } from "../todoSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTodo, filteredTodoIds, } from "../todoSlice";
 import TodoItem from "./TodoItem";
 import { useEffect } from "react";
+import { selectLogin } from "../userSlice";
 
 function TodoList() {
 
     const todoIds = useSelector(filteredTodoIds)
 
-    
+
     const dispatch = useDispatch()
     const status = useSelector(state => state.todos.status)
     const error = useSelector(state => state.todos.error)
-    
+    const loginInfo = useSelector(state => selectLogin(state))
     useEffect(() => {
         if (status === 'idle') {
-            
-            dispatch(fetchTodo())
+
+            dispatch(fetchTodo(loginInfo.userInfo.userId))
         }
-    }, [dispatch,status])
-    
+    }, [dispatch, status])
+
     let content
     if ('loading' === status) {
         content = <div className="loader">loading ...</div>
