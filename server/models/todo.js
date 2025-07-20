@@ -15,6 +15,10 @@ const todoSchema = new mongoose.Schema({
     required: true
     ,default:false
   }, 
+  color: {
+    type: String,
+    default:"white"
+  }, 
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // foreign key-like relationship

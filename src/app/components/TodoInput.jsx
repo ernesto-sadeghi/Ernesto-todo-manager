@@ -10,7 +10,7 @@ function TodoInput() {
   const [errMessage, setErrMessage] = useState("")
   const dispatch = useDispatch()
   const loginInfo = useSelector(state => selectLogin(state))
-  console.log(loginInfo);
+
   
   const userId = loginInfo.userInfo.userId
   const handleSubmit = () => {

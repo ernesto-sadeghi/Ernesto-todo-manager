@@ -10,22 +10,26 @@ function TodoList() {
 
 
     const dispatch = useDispatch()
-    const status = useSelector(state => state.todos.status)
+    const todoStatus = useSelector(state => state.todos.status)
+    const userStatus = useSelector(state => state.user.status)
     const error = useSelector(state => state.todos.error)
     const loginInfo = useSelector(state => selectLogin(state))
     useEffect(() => {
-        if (status === 'idle') {
-
-            dispatch(fetchTodo(loginInfo.userInfo.userId))
+        if (
+            todoStatus === 'idle' &&
+            loginInfo.userInfo.islogin &&        
+            loginInfo.userInfo.userId            
+        ) {
+            dispatch(fetchTodo(loginInfo.userInfo.userId));
         }
-    }, [dispatch, status])
+    }, [dispatch, todoStatus, loginInfo]);
 
     let content
-    if ('loading' === status) {
+    if ('loading' === todoStatus) {
         content = <div className="loader">loading ...</div>
-    } else if ('success' === status) {
+    } else if ('success' === todoStatus) {
         content = todoIds.map(id => <TodoItem todoId={id} key={id} />)
-    } else if ('error' === status) {
+    } else if ('error' === todoStatus) {
         content = <div className="error">{error}</div>
     }
 

@@ -8,3 +8,9 @@
         --color-light: #f8fafc;
     
 }
+
+select:focus-visible {
+  border: none;
+  border-radius: 23px;
+  outline: none;
+}

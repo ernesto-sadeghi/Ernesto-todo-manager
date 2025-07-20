@@ -61,8 +61,8 @@ app.get("/get-todos", async (req, res) => {
 // POST /todo-add
 app.post("/todo-add", async (req, res) => {
   try {
-    const { title,subContent, completed, user } = req.body;
-    const todo = new Todo({ title ,subContent, completed, user });
+    const { title,subContent, completed, user ,color } = req.body;
+    const todo = new Todo({ title ,subContent, completed, user ,color });
     await todo.save();
     res.status(201).json(todo);
   } catch (err) {
@@ -71,13 +71,28 @@ app.post("/todo-add", async (req, res) => {
 });
 
 
-// PATCH  /todo-edit/:id
+// PATCH  /todo-toggle/:id
 app.patch("/todo-toggle/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const todo = await Todo.findById(id);
     if (!todo) return res.status(404).json({ message: "Todo not found" });
     todo.completed = !todo.completed;
+    await todo.save();
+    res.json(todo);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// PATCH  /todo-change-color/:id
+app.patch("/todo-change-color/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { color } = req.body;
+    const todo = await Todo.findById(id);
+    if (!todo) return res.status(404).json({ message: "Todo not found" });
+    todo.color = color;
     await todo.save();
     res.json(todo);
   } catch (err) {

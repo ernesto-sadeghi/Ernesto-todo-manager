@@ -5,7 +5,7 @@ import { login, selectLogin, signup } from "../userSlice";
 function LoginForm() {
    const [email, setEmail] = useState("")
   const loginInfo = useSelector(state => selectLogin(state))
-  console.log(loginInfo);
+
   const dispatch = useDispatch()
   const signInHandler = () => {
     dispatch(signup(email))

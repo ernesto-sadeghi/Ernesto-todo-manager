@@ -35,6 +35,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
           logout(state) {
+            state.status="logout"
             state.userInfo = { islogin: false, userId: "", email: "" };
             if (typeof window !== "undefined") {
                 localStorage.removeItem("user");
@@ -56,7 +57,7 @@ const userSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(login.fulfilled, (state, action) => {
-                state.status = 'success';
+                state.status = 'idle';
                 state.userInfo = {
                     islogin: true,
                     userId: action.payload._id,

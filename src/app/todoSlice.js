@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { createSlice, createAsyncThunk, createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { StatusFilters } from "./filterSlice";
+import { logout } from "./userSlice";
 
 
 export const fetchTodo = createAsyncThunk("todos/fetchtodo", async (id) => {
@@ -24,6 +25,13 @@ export const deleteTodo = createAsyncThunk("todos/deleteTodo", async (id) => {
   const response = await axios.delete(`http://localhost:5000/todo-delete/${id}`);
   return response.data;
 });
+export const setTodoColor = createAsyncThunk("todos/ChangeColor", async ({id,color}) => {
+  console.log(id,color);
+  
+  const response = await axios.patch(`http://localhost:5000/todo-change-color/${id}`,{color});
+  return response.data;
+});
+
 
 
 
@@ -85,6 +93,24 @@ const todoSlice = createSlice({
         state.toggleStatus = 'error';
         state.error = action.payload;
       })
+      .addCase(setTodoColor.pending, (state) => {
+        state.toggleStatus = 'loading';
+      })
+      .addCase(setTodoColor.fulfilled, (state, action) => {
+        state.toggleStatus = 'idle';
+        console.log(action.payload);
+        
+        todoAdapter.updateOne(state, {
+          id: action.payload._id, 
+          changes: {
+            color: action.payload.color
+          }
+        });
+      })
+      .addCase(setTodoColor.rejected, (state, action) => {
+        state.toggleStatus = 'error';
+        state.error = action.payload;
+      })
       .addCase(deleteTodo.pending, (state) => {
         state.toggleStatus = 'loading';
       })
@@ -96,7 +122,8 @@ const todoSlice = createSlice({
       .addCase(deleteTodo.rejected, (state, action) => {
         state.toggleStatus = 'error';
         state.error = action.payload;
-      });
+      })
+      .addCase(logout, () => initialState);
   }
 }
 )
