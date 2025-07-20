@@ -34,6 +34,13 @@ const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
+          logout(state) {
+            state.userInfo = { islogin: false, userId: "", email: "" };
+            if (typeof window !== "undefined") {
+                localStorage.removeItem("user");
+            }
+        },
+
         setUserFromStorage(state, action) {
             const { userId, email } = action.payload;
             state.userInfo = {
