@@ -19,6 +19,8 @@ return (   <header className="bg-white border-b border-gray-200">
       alt="Picture"
         width={150}
         height={150}
+        priority
+        style={{ width: '150px', height: 'auto' }} 
     />
       </div>
       

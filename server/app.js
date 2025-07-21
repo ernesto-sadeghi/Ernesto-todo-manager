@@ -61,8 +61,8 @@ app.get("/get-todos", async (req, res) => {
 // POST /todo-add
 app.post("/todo-add", async (req, res) => {
   try {
-    const { title,subContent, completed, user ,color } = req.body;
-    const todo = new Todo({ title ,subContent, completed, user ,color });
+    const { title,subContent, completed, user ,color,deadline } = req.body;
+    const todo = new Todo({ title ,subContent, completed, user ,color, deadline:deadline?new Date(deadline):null });
     await todo.save();
     res.status(201).json(todo);
   } catch (err) {

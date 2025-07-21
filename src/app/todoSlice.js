@@ -11,6 +11,8 @@ export const fetchTodo = createAsyncThunk("todos/fetchtodo", async (id) => {
   return response.data
 })
 export const addTodo = createAsyncThunk("todos/addtodo", async (todo) => {
+  console.log(todo);
+  
   const response = await axios.post('http://localhost:5000/todo-add', {
     ...todo, completed: false
   })

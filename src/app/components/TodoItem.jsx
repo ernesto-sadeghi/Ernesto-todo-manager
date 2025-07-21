@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTodo, selectTodoById, setTodoColor, toggleTodo } from "../todoSlice";
 import { useEffect, useState } from "react";
+import formatDeadline from "../composables/formatDeadline";
 const colors = {
   white: "#ffffff",
   blue: "#99b1ff",
@@ -15,6 +16,11 @@ function TodoItem({ todoId }) {
   const [color, setColor] = useState("#fff")
   const dispatch = useDispatch()
   let toggleStatus = useSelector(state => state.todos.toggleStatus)
+  const [now, setNow] = useState(new Date());
+
+
+
+
 
   const colorOptions = Object.keys(colors).map((c) => (
     <option key={c} value={c}>
@@ -25,8 +31,7 @@ function TodoItem({ todoId }) {
 
 
   const handleChangeColor = (color) => {
-    console.log(color);
-    console.log(todo._id);
+   
     dispatch(setTodoColor({id:todo._id,color}))
     setColor(color)
   }
@@ -45,11 +50,13 @@ function TodoItem({ todoId }) {
     }
   }
 
-// useEffect(()=>{
-//   console.log(todo);
-  
-//   setColor(todo.color)
-// },[color])
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setNow(new Date());
+  }, 60000); // updates every minute
+  return () => clearInterval(interval);
+}, []);
 
 
 
@@ -64,6 +71,8 @@ function TodoItem({ todoId }) {
           </span>
         </h3>
         <p style={{overflowWrap:"anywhere"}} className="text-sm  text-gray-500">{todo.subContent}</p>
+        {todo.deadline?<p style={{overflowWrap:"anywhere"}} className="text-xs pt-3 text-gray-700"><span className="font-bold">deadline : </span> {formatDeadline(todo.deadline)}</p>:""}
+        
       </div>
       <div className="flex row">
         <select value={todo.color} onChange={(e) => handleChangeColor(e.target.value)} className="ring-0 p-2 mx-4" name="" id="">
