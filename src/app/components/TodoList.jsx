@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodo, filteredTodoIds, } from "../todoSlice";
+import { fetchTodo, sortedFilteredTodoIds, } from "../todoSlice";
 import TodoItem from "./TodoItem";
 import { useEffect } from "react";
 import { selectLogin } from "../userSlice";
 
 function TodoList() {
 
-    const todoIds = useSelector(filteredTodoIds)
-    const reversedtodoIds = [...todoIds].reverse();
+    const todoIds = useSelector(sortedFilteredTodoIds)
+    // const reversedtodoIds = [...todoIds].reverse();
 
     const dispatch = useDispatch()
     const todoStatus = useSelector(state => state.todos.status)
@@ -28,7 +28,8 @@ function TodoList() {
     if ('loading' === todoStatus) {
         content = <div className="loader">loading ...</div>
     } else if ('success' === todoStatus) {
-        content = reversedtodoIds.map(id => <TodoItem todoId={id} key={id} />)
+        content = todoIds.map(id => <TodoItem todoId={id} key={id} />)
+        // content = reversedtodoIds.map(id => <TodoItem todoId={id} key={id} />)
     } else if ('error' === todoStatus) {
         content = <div className="error">{error}</div>
     }

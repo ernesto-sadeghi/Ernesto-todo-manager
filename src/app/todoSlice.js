@@ -11,7 +11,6 @@ export const fetchTodo = createAsyncThunk("todos/fetchtodo", async (id) => {
   return response.data
 })
 export const addTodo = createAsyncThunk("todos/addtodo", async (todo) => {
-  console.log(todo);
   
   const response = await axios.post('http://localhost:5000/todo-add', {
     ...todo, completed: false
@@ -159,9 +158,23 @@ const selectFilteredTodos = createSelector(selectTodos, state => state.filter,
 
 )
 
-
-export const filteredTodoIds = createSelector(
+export const selectSortedFilteredTodos = createSelector(
   selectFilteredTodos,
-  (todos) => todos.map(todo => todo._id)
-)
+  (todos) =>
+    todos
+      .slice()
+      .sort((a, b) => {
+        const aTime = new Date(a.deadline);
+        const bTime = new Date(b.deadline);
 
+        // Handle missing deadlines (put at end)
+        if (!a.deadline) return -1;
+        if (!b.deadline) return -1;
+
+        return aTime - bTime; 
+      })
+);
+export const sortedFilteredTodoIds = createSelector(
+  selectSortedFilteredTodos,
+  (todos) => todos.map(todo => todo._id)
+);
