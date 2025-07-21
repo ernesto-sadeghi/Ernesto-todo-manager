@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTodo, selectTodoById, setTodoColor, toggleTodo } from "../todoSlice";
 import { useEffect, useState } from "react";
-import formatDeadline from "../composables/formatDeadline";
+import formatDeadline, { timeDistance } from "../composables/formatDeadline";
 const colors = {
   white: "#ffffff",
   blue: "#99b1ff",
@@ -71,7 +71,7 @@ useEffect(() => {
           </span>
         </h3>
         <p style={{overflowWrap:"anywhere"}} className="text-sm  text-gray-500">{todo.subContent}</p>
-        {todo.deadline?<p style={{overflowWrap:"anywhere"}} className="text-xs pt-3 text-gray-700"><span className="font-bold">deadline : </span> {formatDeadline(todo.deadline)}</p>:""}
+        {todo.deadline?<p style={{overflowWrap:"anywhere"}} className="text-xs pt-3 text-gray-700"><span className="font-bold">deadline : </span> {formatDeadline(todo.deadline)} {timeDistance(todo.deadline)<0?<span className="text-red-600" >expired</span>:""} </p>:""}
         
       </div>
       <div className="flex row">
