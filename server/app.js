@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());        
 
 
-const dbURI = 'mongodb+srv://ernestosadeghi:123eee@ernesto.aws3plc.mongodb.net/?retryWrites=true&w=majority&appName=ernesto';
+const dbURI = process.env.MONGO_URI;
 mongoose.connect(dbURI)
   .then(() => {
     console.log("Connected to DB");

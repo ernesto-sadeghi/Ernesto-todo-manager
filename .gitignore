@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/sever/.env
 /.pnp
 .pnp.*
 .yarn/*
