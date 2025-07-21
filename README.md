@@ -46,14 +46,14 @@ A full-featured Todo Manager with user authentication, deadline tracking, color 
 
    ```bash
    git clone https://github.com/yourusername/todo-manager.git
-  ```
+  
 2. **Second step** :
    ```bash
    cd Ernesto-todo-manager/server
    node app
-  ```
+ 
 3. **Third step** :
    ```bash
    cd Ernesto-todo-manager
    npm run dev
-  ```
+  
